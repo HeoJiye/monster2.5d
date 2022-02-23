@@ -40,16 +40,16 @@ public class EnemyMove : MonoBehaviour
         direction = Random.Range(-2, 3);
 
         // Vertical
-        float moveY = 0;
-        if (direction == -1) moveY = 1;
-        else if (direction == 1) moveY = -1;
+        float moveZ = 0;
+        if (direction == -1) moveZ = 1;
+        else if (direction == 1) moveZ = -1;
 
         // Horizontal
         float moveX = 0;
         if (direction == -2) moveX = 1;
         else if (direction == 2) moveX = -1;
 
-        return new Vector3(moveX, 0, moveY);
+        return new Vector3(moveX, 0, moveZ);
     }
     void Move() {
         // Normalize
@@ -83,4 +83,20 @@ public class EnemyMove : MonoBehaviour
         }
     }
 
+    private void OnTriggerEnter(Collider collision) {
+        if(collision.gameObject.tag == "Skill")
+            animator.SetTrigger(attacked_param);
+    }
+    private void OnTriggerStay(Collider collision) {
+        if(collision.gameObject.tag == "Skill") {
+            isAttacked = true;
+            spriteRenderer.color = Color.red;
+        }
+    }
+    private void OnTriggerExit(Collider collision) {
+        if(collision.gameObject.tag == "Skill") {
+            isAttacked = false;
+            spriteRenderer.color = Color.white;
+        }
+    }
 }
